@@ -7,11 +7,10 @@ RandomForest::RandomForest(int treeNum,int maxDepth,int minLeafSample,float minI
 	_minLeafSample=minLeafSample;
 	_minInfoGain=minInfoGain;
 	_trainSample=NULL;
-	printf("total tree number:%d\n",_treeNum);
-	printf("max depth of a single tree:%d\n",_maxDepth);
-	printf("the minimum samples in a leaf:%d\n",_minLeafSample);
-	printf("the minimum information gain:%f\n",_minInfoGain);
-    
+	// printf("total tree number:%d\n",_treeNum);
+	// printf("max depth of a single tree:%d\n",_maxDepth);
+	// printf("the minimum samples in a leaf:%d\n",_minLeafSample);
+	// printf("the minimum information gain:%f\n",_minInfoGain);
 	_forest=new Tree*[_treeNum];
 	for(int i=0;i<_treeNum;++i)
 	{_forest[i]=NULL;}
@@ -65,20 +64,17 @@ void RandomForest::train(float**trainset,float*labels,int SampleNum,int featureN
 {
 	if(_treeNum<1)
 	{
-		printf("total tree number must bigger than 0!\n");
-		printf("training failed\n");
+		printf("Error (native). Total tree number must be bigger than 0!\n");
 		return;
 	}
 	if(_maxDepth<1)
 	{
-		printf("the max depth must bigger than 0!\n");
-		printf("training failed\n");
+		printf("Error (native). The max depth must be bigger than 0!\n");
 		return;
 	}
 	if(_minLeafSample<2)
 	{
-		printf("the minimum samples in a leaf must bigger than 1!\n");
-		printf("training failed\n");
+		printf("Error (native). The minimum samples in a leaf must be bigger than 1!\n");
 		return;
 	}
 	_trainSampleNum=SampleNum;
@@ -111,8 +107,8 @@ void RandomForest::train(float**trainset,float*labels,int SampleNum,int featureN
 	//start to train every tree in the forest
 	for(int i=0;i<_treeNum;++i)
 	{
-		printf("train the %d th tree...\n",i);
-		//random sampling from trainset
+		// printf("train the %d th tree...\n",i);
+		// random sampling from trainset
 		Sample*sample=new Sample(_trainSample);
 		sample->randomSelectSample(_sampleIndex,_trainSampleNum,_trainSampleNum);
 		_forest[i]->train(sample);
@@ -230,10 +226,10 @@ void RandomForest::readModel(const char*path)
 	fread(&_isRegression,sizeof(bool),1,modelFile);
 	int nodeNum=static_cast<int>(pow(2.0,_maxDepth)-1);
 	_trainSample=NULL;
-	printf("total tree number:%d\n",_treeNum);
-	printf("max depth of a single tree:%d\n",_maxDepth);
-	printf("_classNum:%d\n",_classNum);
-	printf("_isRegression:%d\n",_isRegression);
+	// printf("total tree number:%d\n",_treeNum);
+	// printf("max depth of a single tree:%d\n",_maxDepth);
+	// printf("_classNum:%d\n",_classNum);
+	// printf("_isRegression:%d\n",_isRegression);
 	_forest=new Tree*[_treeNum];
 	//initialize every tree
 	if(_isRegression)
