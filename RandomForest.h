@@ -40,10 +40,12 @@ public:
 	*trainFeatureNumPerNode:the feature number used in every node while training
 	*************************************************/
 	void train(float**trainset,float*labels,int SampleNum,int featureNum,
+			   int classNum,bool isRegression,int trainFeatureNumPerNode, int seed);
+        void train(float**trainset,float*labels,int SampleNum,int featureNum,
 			   int classNum,bool isRegression,int trainFeatureNumPerNode);
 	void train(float**trainset,float*labels,int SampleNum,int featureNum,
 			   int classNum,bool isRegression);
-	/************************************************
+        /************************************************
 	*sample: a single sample
 	*response: the predict result
 	*************************************************/

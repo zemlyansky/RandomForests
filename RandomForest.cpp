@@ -49,11 +49,19 @@ void RandomForest::train(float**trainset,float*labels,int SampleNum,int featureN
 			   int classNum,bool isRegression)
 {
 	int trainFeatureNumPerNode=static_cast<int>(sqrt(static_cast<float>(featureNum)));
-	train(trainset,labels,SampleNum,featureNum,classNum,isRegression,trainFeatureNumPerNode);
+        int seed = time(NULL);
+	train(trainset, labels, SampleNum, featureNum, classNum, isRegression, trainFeatureNumPerNode, seed);
+}
+
+void RandomForest::train(float**trainset,float*labels,int SampleNum, int featureNum, 
+                           int classNum, bool isRegression, int trainFeatureNumPerNode)
+{
+        int seed = time(NULL);
+	train(trainset, labels, SampleNum, featureNum, classNum, isRegression, trainFeatureNumPerNode, seed);
 }
 
 void RandomForest::train(float**trainset,float*labels,int SampleNum,int featureNum,
-			   int classNum,bool isRegression,int trainFeatureNumPerNode)
+			   int classNum,bool isRegression, int trainFeatureNumPerNode, int seed)
 {
 	if(_treeNum<1)
 	{
@@ -98,7 +106,7 @@ void RandomForest::train(float**trainset,float*labels,int SampleNum,int featureN
 	}
 	//this object hold the whole trainset&labels
 	_trainSample=new Sample(trainset,labels,_classNum,_trainSampleNum,_featureNum);
-	srand(static_cast<unsigned int>(time(NULL)));
+	srand(static_cast<unsigned int>(seed));
 	int*_sampleIndex=new int[_trainSampleNum];
 	//start to train every tree in the forest
 	for(int i=0;i<_treeNum;++i)
