@@ -118,37 +118,36 @@ void RandomForest::train(float**trainset,float*labels,int SampleNum,int featureN
 	_sampleIndex=NULL;
 }
 
-void RandomForest::predict(float*data,float&response)
+void RandomForest::predict(float*data, float&response, int iClass)
 {
 	//get the predict from every tree
 	//if regression,_classNum=1
 	float*result=new float[_classNum];
 	int i=0;
-	for(i=0;i<_classNum;++i)
-	{result[i]=0;}
-	for(i=0;i<_treeNum;++i)//_treeNum
-	{
-		Result r;
-		r.label=0;
-		r.prob=0;//Result 
-		r=_forest[i]->predict(data);
-		result[static_cast<int>(r.label)]+=r.prob;
+	for (i = 0; i < _classNum; ++i) {
+          result[i]=0;
+        }
+	for (i = 0; i < _treeNum; ++i) {
+	  Result r;
+	  r.label = 0;
+	  r.prob = 0; //Result
+	  r = _forest[i] -> predict(data);
+	  result[static_cast<int>(r.label)] += r.prob;
 	}
-	if(_isRegression)
-	{response=result[0]/_treeNum;}
-	else
-	{
-		float maxProbLabel=0;
-		float maxProb=result[0];
-		for(i=1;i<_classNum;++i)
-		{
-			if(result[i]>maxProb)
-			{
-				maxProbLabel=i;
-				maxProb=result[i];
-			}
-		}
-		response=maxProbLabel;
+	if(_isRegression) {
+          response = result[0] /_treeNum;
+        } else if (iClass >= 0) {
+          response = result[iClass];
+        } else {
+	  float maxProbLabel = 0;
+	  float maxProb = result[0];
+	  for(i = 1; i < _classNum; ++i) {
+	    if (result[i] > maxProb) {
+	      maxProbLabel = i;
+	      maxProb = result[i];
+	    }
+	  }
+	  response = maxProbLabel;
 	}
 	delete[] result;
 }
@@ -158,7 +157,7 @@ void RandomForest::predict(float**testset,int SampleNum,float*responses)
 	//get the predict from every tree
 	for(int i=0;i<SampleNum;++i)
 	{
-		predict(testset[i],responses[i]);
+		predict(testset[i],responses[i], -1);
 	}
 }
 

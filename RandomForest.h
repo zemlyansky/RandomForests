@@ -49,7 +49,7 @@ public:
 	*sample: a single sample
 	*response: the predict result
 	*************************************************/
-	void predict(float*sample,float&response);
+	void predict(float*sample, float&response, int iClass);
 	/************************************************
 	*testset: the test set
 	*SampleNum:the sample number in the testset
